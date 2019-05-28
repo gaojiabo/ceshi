@@ -1,3 +1,2 @@
 <?php
-
-echo 'ceshi.php';
+echo 'php code';
