@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>validate.js拓展验证</title>
+	<script src="../lib/jquery.js"></script>
+	<script src="../lib/jquery.mockjax.js"></script>
+	<script src="../dist/jquery.validate.js"></script>
+	<script src="../dist/additional-methods.js"></script>
+	
+	
+</head>
+<body>
+<form action="01.php"  method="get" id="tinyphp">
+	邮编：<input type="text" value="" name="isZipCode" /><br /><br />
+	名字：<input type="text" value="" name="userName" id="userName"/><br /><br />
+	整数： <input id="digits" type="digits" name="digits" class="digits" required><br /><br />
+	<input type="submit" value="提交" />
+</form>
+<script type="text/javascript">
+var validator = $("#tinyphp").validate({
+    // 添加验证规则
+    rules: {
+        isZipCode: {    //验证邮箱
+			required:true,
+            isZipCode: true
+        },
+		userName:{
+            required: true,
+            //userName: true,
+            rangelength: [5,10],
+			remote: {
+				url: "checkUserName.php",
+				type: "get",
+				dataType: "json",
+				data: {                     //要传递的数据
+					userName: function() {
+						return $('[name="userName"]').val();
+					}
+				}
+			},
+        },
+		
+    },
+
+	messages:{
+        userName: {
+            required: "请填写用户名",
+            rangelength: "用户名必须在5-10个字符之间",
+			remote:"该用户名已被占用",
+        },
+	    isZipCode: {
+			required: "请输入邮编"
+		}
+    
+    },
+	submitHandler:function(form){
+		//alert("验证通过");
+		//form.submit();
+		
+	}
+});  
+
+
+var cnmsg = {
+	required: "必选字段",
+	remote: "请修正该字段",
+	email: "请输入正确格式的电子邮件",
+	url: "请输入合法的网址",
+	date: "请输入合法的日期",
+	dateISO: "请输入合法的日期 (ISO).",
+	number: "请输入合法的数字",
+	digits: "只能输入整数",
+	creditcard: "请输入合法的信用卡号",
+	equalTo: "请再次输入相同的值",
+	accept: "请输入拥有合法后缀名的字符串",
+	maxlength: jQuery.validator.format("请输入一个长度最多是 {0} 的字符串"),
+	minlength: $.validator.format("请输入一个长度最少是 {0} 的字符串"),
+	rangelength: jQuery.validator.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+	range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+	max: jQuery.validator.format("请输入一个最大为 {0} 的值"),
+	min: jQuery.validator.format("请输入一个最小为 {0} 的值")
+};
+jQuery.extend(jQuery.validator.messages, cnmsg);
+
+
+    </script>
+</body>
+</html>

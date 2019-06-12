@@ -1,0 +1,54 @@
+    <meta charset="utf-8" />
+    <!DOCTYPE html>  
+    <html>  
+        <head>  
+        <title>Submit a form via AJAX</title>  
+
+     <script src="../lib/jquery.js"></script>
+    	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+        
+    </head>  
+    <body>  
+    <form action="" name="infos" id="infos">
+     
+        <p>用户名：<input type="text" name="username" id="username" /></p>
+     
+        <p><input type="submit" name="sub" /></p>
+     
+    </form>
+     
+    <script type="text/javascript">
+     
+    $(function(){
+        $('#infos').validate({
+            debug:false,
+            onkeyup:false,
+            rules:{
+                username:{
+                    required:true, 
+                    remote:{
+                        type:"POST",
+                        url:"01.php", //请求地址
+                        data:{
+                            username:function(){ return $("#username").val(); }
+                        }
+                    }
+                }
+            },
+            messages:{
+                username:{
+                    required:"用户名必填",
+                    remote:"用户名已存在"
+                }
+            },
+            submitHandler:function(form){
+                alert("验证通过");
+            }
+        });
+    });
+     
+    </script>
+     
+    </body>  
+    </html>  
